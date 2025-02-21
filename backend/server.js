@@ -1,16 +1,17 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+require("dotenv").config(); // Load .env file
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000; // Use Railway's port if available
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Serve static files from the build folder
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, "build")));
 
 // Generate random Lorem Ipsum text
 const generateLoremIpsum = () => {
@@ -26,12 +27,14 @@ const generateLoremIpsum = () => {
     "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.",
     "Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.",
   ];
+
   return loremIpsum[Math.floor(Math.random() * loremIpsum.length)];
 };
 
 // Chat endpoint
-app.post('/api/chat', (req, res) => {
+app.post("/api/chat", (req, res) => {
   const { message } = req.body;
+
   setTimeout(() => {
     const reply = generateLoremIpsum();
     res.json({ reply });
@@ -39,8 +42,8 @@ app.post('/api/chat', (req, res) => {
 });
 
 // Serve the frontend for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Start server
